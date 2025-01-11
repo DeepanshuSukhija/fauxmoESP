@@ -324,29 +324,7 @@ bool fauxmoESP::_onTCPControl(AsyncClient *client, String url, String body) {
 
 			--id;
 
-			// Brightness
-			if ((pos = body.indexOf("bri")) > 0) {
-				unsigned char value = body.substring(pos+5).toInt();
-				_devices[id].value = value;
-				_devices[id].state = (value > 0);
-			} else if ((pos = body.indexOf("hue")) > 0) {
-				_devices[id].state = true;
-				unsigned int pos_comma = body.indexOf(",", pos);
-				uint16_t hue = body.substring(pos+5, pos_comma).toInt();
-				pos = body.indexOf("sat", pos_comma);
-				uint8_t sat = body.substring(pos+5).toInt();
-				byte* rgb = _hs2rgb(hue, sat);
-				_devices[id].rgb[0] = rgb[0];
-				_devices[id].rgb[1] = rgb[1];
-				_devices[id].rgb[2] = rgb[2];
-			} else if ((pos = body.indexOf("ct")) > 0) {
-				_devices[id].state = true;
-				uint16_t ct = body.substring(pos+4).toInt();
-				byte* rgb = _ct2rgb(ct);
-				_devices[id].rgb[0] = rgb[0];
-				_devices[id].rgb[1] = rgb[1];
-				_devices[id].rgb[2] = rgb[2];
-			} else if (body.indexOf("false") > 0) {
+			if (body.indexOf("false") > 0) {
 				_devices[id].state = false;
 			} else {
 				_devices[id].state = true;
@@ -369,7 +347,6 @@ bool fauxmoESP::_onTCPControl(AsyncClient *client, String url, String body) {
 			}
 
 			return true;
-
 		}
 
 	}
