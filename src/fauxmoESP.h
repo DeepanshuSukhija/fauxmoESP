@@ -34,6 +34,7 @@ THE SOFTWARE.
 #define FAUXMO_TCP_PORT             1901
 #define FAUXMO_RX_TIMEOUT           3
 #define FAUXMO_DEVICE_UNIQUE_ID_LENGTH  27
+#define FAUXMO_BLACKLISTED_IP           {"192.168.29.12", "192.168.29.7"}
 
 //#define DEBUG_FAUXMO                Serial
 #ifdef DEBUG_FAUXMO

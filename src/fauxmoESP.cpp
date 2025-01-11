@@ -78,6 +78,22 @@ void fauxmoESP::_handleUDP() {
 			DEBUG_MSG_FAUXMO("[FAUXMO] UDP packet received\n%s", (const char *) data);
 		#endif
 
+		
+		String remoteIPAddress = _udp.remoteIP().toString();
+		bool isIPBlocked = false;
+
+		for (const auto& blockedIP : FAUXMO_BLACKLISTED_IP) {
+			if (remoteIPAddress == blockedIP) {
+				isIPBlocked = true;
+				break;
+			}	
+		}
+
+		if (isIPBlocked) {
+			DEBUG_MSG_FAUXMO("[FAUXMO] Request blocked from IP: %s", remoteIPAddress.c_str());
+			return;
+		}
+
         String request = (const char *) data;
         if (request.indexOf("M-SEARCH") >= 0) {
             if ((request.indexOf("ssdp:discover") > 0) || (request.indexOf("upnp:rootdevice") > 0) || (request.indexOf("device:basic:1") > 0)) {
